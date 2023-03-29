@@ -1,0 +1,73 @@
+---
+title: "Writing Reports with R Markdown"
+author: "Hector Mendoza"
+date: "2023-03-29"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r packages, include = FALSE}
+library(tidyverse)
+```
+
+This report was prepared to the attention of the UN. It analyzes the relationship between a country's GDP, its life expectancy and CO2 emissions. Our goal is to determine to what degree a country's economic strength or weakness may be related to its public health status and impact on climate pollution. We hypothesize that both life expectancy and CO2 emissions increase with a country's GDP.
+
+```{r data, include = FALSE}
+gapminder_1997 <- read_csv(file = 'Desktop/un-report/data/gapminder_1997.csv')
+```
+```{r gpd_lifeexp_1997, echo = FALSE}
+ggplot(data = gapminder_1997) +
+  aes(x = gdpPercap, y = lifeExp, color = continent, size = pop/1000000) +
+  geom_point() +
+  labs(x = "GDP per Capita", y = "Life Expectancy", title = 'Do people in wealthy countries live longer?', size = 'Population (in millions)')
+```
+
+```{r variables, include = FALSE}
+nCountries <- gapminder_1997 %>% 
+  select(country) %>% 
+  n_distinct()
+
+minGDP <- gapminder_1997 %>% 
+  summarise(round(min(gdpPercap))) %>% 
+  pull()
+
+maxGDP <- gapminder_1997 %>% 
+  summarise(round(max(gdpPercap))) %>% 
+  pull()
+```
+
+The above plot shows the relationship between GDP per capita and life expectancy for a total of `r nCountries` countries. For this set of countries, economic wealth ranged from a minimum of USD `r minGDP` to a maximum of USD `r maxGDP` per capita.
+
+|HEADER 1|HEADER 2|
+|--------|--------|
+|row 1, column 1|row 1, column 2|
+|row 2, column 2|row 2, column 2|
+
+|Summary of Data|
+|---------------|
+|Nujmber of Countries|`r nCountries`|
+|Minimum GDP per capita|`r minGDP`|
+|Maximum GDP per capita|`r maxGDP`|
+
+```{r kabletable, echo = FALSE}
+library(knitr)
+
+gapminder_1997 %>% 
+  filter(continent == 'Oceania') %>% 
+  kable()
+```
+
+# Header 1
+## Header 2
+### My third header
+
+#### Exercise
+
+My list:
+1. **R**
+2. *kable()*
+3. ***NGS Analysis***
+4. [Basic Syntax Cheat Sheet](https://www.markdownguide.org/cheat-sheet/)
