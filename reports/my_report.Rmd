@@ -67,6 +67,7 @@ gapminder_1997 %>%
 #### Exercise
 
 My list:
+
 1. **R**
 2. *kable()*
 3. ***NGS Analysis***
